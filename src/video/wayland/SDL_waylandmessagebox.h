@@ -18,15 +18,16 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-#include "../../SDL_internal.h"
 
-#ifndef SDL_waylandclipboard_h_
-#define SDL_waylandclipboard_h_
+#ifndef SDL_waylandmessagebox_h_
+#define SDL_waylandmessagebox_h_
 
-extern int Wayland_SetClipboardText(_THIS, const char *text);
-extern char *Wayland_GetClipboardText(_THIS);
-extern SDL_bool Wayland_HasClipboardText(_THIS);
+#if SDL_VIDEO_DRIVER_WAYLAND
 
-#endif /* SDL_waylandclipboard_h_ */
+extern int Wayland_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);
+
+#endif /* SDL_VIDEO_DRIVER_WAYLAND */
+
+#endif /* SDL_waylandmessagebox_h_ */
 
 /* vi: set ts=4 sw=4 expandtab: */

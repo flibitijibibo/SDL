@@ -20,13 +20,56 @@
 */
 #include "../../SDL_internal.h"
 
-#ifndef SDL_waylandclipboard_h_
-#define SDL_waylandclipboard_h_
+#if SDL_VIDEO_DRIVER_WAYLAND
 
-extern int Wayland_SetClipboardText(_THIS, const char *text);
-extern char *Wayland_GetClipboardText(_THIS);
-extern SDL_bool Wayland_HasClipboardText(_THIS);
+#include "../SDL_sysvideo.h"
+#include "SDL_waylandvideo.h"
 
-#endif /* SDL_waylandclipboard_h_ */
+int
+Wayland_InitKeyboard(_THIS)
+{
+#ifdef SDL_USE_IME
+    SDL_IME_Init();
+#endif
+
+    return 0;
+}
+
+void
+Wayland_QuitKeyboard(_THIS)
+{
+#ifdef SDL_USE_IME
+    SDL_IME_Quit();
+#endif
+}
+
+void
+Wayland_StartTextInput(_THIS)
+{
+    /* No-op */
+}
+
+void
+Wayland_StopTextInput(_THIS)
+{
+#ifdef SDL_USE_IME
+    SDL_IME_Reset();
+#endif
+}
+
+void
+Wayland_SetTextInputRect(_THIS, SDL_Rect *rect)
+{
+    if (!rect) {
+        SDL_InvalidParamError("rect");
+        return;
+    }
+       
+#ifdef SDL_USE_IME
+    SDL_IME_UpdateTextRect(rect);
+#endif
+}
+
+#endif /* SDL_VIDEO_DRIVER_WAYLAND */
 
 /* vi: set ts=4 sw=4 expandtab: */

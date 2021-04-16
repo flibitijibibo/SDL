@@ -20,13 +20,15 @@
 */
 #include "../../SDL_internal.h"
 
-#ifndef SDL_waylandclipboard_h_
-#define SDL_waylandclipboard_h_
+#ifndef SDL_waylandkeyboard_h_
+#define SDL_waylandkeyboard_h_
 
-extern int Wayland_SetClipboardText(_THIS, const char *text);
-extern char *Wayland_GetClipboardText(_THIS);
-extern SDL_bool Wayland_HasClipboardText(_THIS);
+extern int Wayland_InitKeyboard(_THIS);
+extern void Wayland_QuitKeyboard(_THIS);
+extern void Wayland_StartTextInput(_THIS);
+extern void Wayland_StopTextInput(_THIS);
+extern void Wayland_SetTextInputRect(_THIS, SDL_Rect *rect);
 
-#endif /* SDL_waylandclipboard_h_ */
+#endif /* SDL_waylandkeyboard_h_ */
 
 /* vi: set ts=4 sw=4 expandtab: */
