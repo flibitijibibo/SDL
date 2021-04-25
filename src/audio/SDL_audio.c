@@ -1435,8 +1435,26 @@ SDL_OpenAudioDevice(const char *device, int iscapture,
                     const SDL_AudioSpec * desired, SDL_AudioSpec * obtained,
                     int allowed_changes)
 {
+    /* FIXME: PulseAudio is way too nice and lets you use custom formats.
+     * This sucks though, because Metro Exodus (and probably Redux?) request
+     * stereo sound with ALLOW_CHANNELS_CHANGE, but the Pulse driver will never
+     * set it to, say, 5.1 like it should. So let's take some notes from FAudio
+     * and use SDL_AUDIO_CHANNELS instead, since it defaults to stereo anyway.
+     *
+     * We really need to make 0 act more like it does in XAudio2, now that we
+     * have GetAudioDeviceSpec to make it easier to know what to default to.
+     * -flibit
+     */
+#if 1
+    SDL_AudioSpec spec;
+    SDL_memcpy(&spec, desired, sizeof(SDL_AudioSpec));
+    spec.channels = 0;
+    return open_audio_device(device, iscapture, &spec, obtained,
+                             allowed_changes, 2);
+#else
     return open_audio_device(device, iscapture, desired, obtained,
                              allowed_changes, 2);
+#endif
 }
 
 SDL_AudioStatus
