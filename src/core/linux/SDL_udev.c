@@ -450,9 +450,6 @@ SDL_UDEV_Poll(void)
         action = _this->syms.udev_device_get_action(dev);
 
         if (SDL_strcmp(action, "add") == 0) {
-            /* Wait for the device to finish initialization */
-            SDL_Delay(100);
-
             device_event(SDL_UDEV_DEVICEADDED, dev);
         } else if (SDL_strcmp(action, "remove") == 0) {
             device_event(SDL_UDEV_DEVICEREMOVED, dev);
