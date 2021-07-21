@@ -119,12 +119,13 @@ SDL_CreateRGBSurfaceWithFormat(Uint32 flags, int width, int height, int depth,
             return NULL;
         }
 
-        surface->pixels = SDL_malloc((size_t)size);
+        surface->pixels = SDL_SIMDAlloc((size_t)size);
         if (!surface->pixels) {
             SDL_FreeSurface(surface);
             SDL_OutOfMemory();
             return NULL;
         }
+        surface->flags |= SDL_SIMD_ALIGNED;
         /* This is important for bitmaps */
         SDL_memset(surface->pixels, 0, surface->h * surface->pitch);
     }
@@ -1234,7 +1235,13 @@ SDL_FreeSurface(SDL_Surface * surface)
         SDL_FreeFormat(surface->format);
         surface->format = NULL;
     }
-    if (!(surface->flags & SDL_PREALLOC)) {
+    if (surface->flags & SDL_PREALLOC) {
+        /* Don't free */
+    } else if (surface->flags & SDL_SIMD_ALIGNED) {
+        /* Free aligned */
+        SDL_SIMDFree(surface->pixels);
+    } else {
+        /* Normal */
         SDL_free(surface->pixels);
     }
     if (surface->map) {
