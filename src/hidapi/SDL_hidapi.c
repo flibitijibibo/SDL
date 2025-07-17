@@ -899,8 +899,8 @@ static const struct {
     Uint16 vendor;
     Uint16 product;
 } SDL_libusb_whitelist[] = {
-    { 0x057e, 0x0337 }, // Nintendo WUP-028, Wii U/Switch GameCube Adapter
-    { 0x057e, 0x2073 }, // Nintendo Switch 2 NSO GameCube Controller
+    { USB_VENDOR_NINTENDO, USB_PRODUCT_NINTENDO_GAMECUBE_ADAPTER },
+    { USB_VENDOR_NINTENDO, USB_PRODUCT_NINTENDO_SWITCH2_GAMECUBE_CONTROLLER },
 };
 
 static bool IsInWhitelist(Uint16 vendor, Uint16 product)
