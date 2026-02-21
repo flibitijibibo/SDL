@@ -29,12 +29,11 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-/* OpenXR test requires platforms with full OpenXR header support.
- * On unsupported platforms (PSP, PS2, 3DS, Vita, 32-bit Windows), we compile
+/* Not all compilers support the OpenXR headers' C standard.
+ * On unsupported platforms (PSP, PS2, 3DS, Vita), we compile
  * a stub that exits gracefully. */
 #if defined(SDL_PLATFORM_PSP) || defined(SDL_PLATFORM_PS2) || \
-    defined(SDL_PLATFORM_3DS) || defined(SDL_PLATFORM_VITA) || \
-    (defined(SDL_PLATFORM_WIN32) && !defined(_WIN64))
+    defined(SDL_PLATFORM_3DS) || defined(SDL_PLATFORM_VITA)
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +46,12 @@ int main(int argc, char *argv[])
 #else /* HAVE_OPENXR */
 
 /* Include OpenXR headers BEFORE SDL_openxr.h to get full type definitions */
+#ifdef HAVE_OPENXR_H
 #include <openxr/openxr.h>
+#else
+/* SDL includes a copy for building on systems without the OpenXR SDK */
+#include "../src/video/khronos/openxr/openxr.h"
+#endif
 
 #include <SDL3/SDL_openxr.h>
 
