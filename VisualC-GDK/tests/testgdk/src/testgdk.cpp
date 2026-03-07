@@ -296,7 +296,6 @@ static void DrawSprites(SDL_Renderer * renderer, SDL_Texture * sprite)
 static void update(bool *suppressdraw)
 {
     SDL_Event event;
-    int i;
 
     /* Check for events */
     while (SDL_PollEvent(&event)) {
@@ -311,7 +310,7 @@ static void update(bool *suppressdraw)
 
         if (event.type == SDL_EVENT_USER) {
             if (event.user.code == SUSPEND_CODE) {
-                for (i = 0; i < state->num_windows; ++i) {
+                for (int i = 0; i < state->num_windows; ++i) {
                     if (state->windows[i] != NULL) {
                         SDL_GDKSuspendRenderer(state->renderers[i]);
                     }
@@ -319,7 +318,7 @@ static void update(bool *suppressdraw)
                 *suppressdraw = true;
                 SDL_GDKSuspendComplete();
             } else if (event.user.code == RESUME_CODE) {
-                for (i = 0; i < state->num_windows; ++i) {
+                for (int i = 0; i < state->num_windows; ++i) {
                     if (state->windows[i] != NULL) {
                         SDL_GDKResumeRenderer(state->renderers[i]);
                     }
